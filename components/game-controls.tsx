@@ -3,12 +3,18 @@
 import { useState, useEffect } from "react"
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
 
-export default function GameControls({ onMove }) {
-  const [pressedKeys, setPressedKeys] = useState(new Set())
+type Direction = "up" | "down" | "left" | "right"
+
+interface GameControlsProps {
+  onMove: (direction: Direction) => void
+}
+
+export default function GameControls({ onMove }: GameControlsProps) {
+  const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set())
 
   // Handle keyboard controls
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase()
       if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(key)) {
         e.preventDefault()
@@ -16,7 +22,7 @@ export default function GameControls({ onMove }) {
       }
     }
 
-    const handleKeyUp = (e) => {
+    const handleKeyUp = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase()
       if (["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(key)) {
         setPressedKeys((prev) => {
@@ -59,11 +65,11 @@ export default function GameControls({ onMove }) {
   }, [pressedKeys, onMove])
 
   // Handle button clicks for mobile
-  const handleButtonDown = (direction) => {
+  const handleButtonDown = (direction: string) => {
     setPressedKeys((prev) => new Set(prev).add(direction))
   }
 
-  const handleButtonUp = (direction) => {
+  const handleButtonUp = (direction: string) => {
     setPressedKeys((prev) => {
       const newKeys = new Set(prev)
       newKeys.delete(direction)
@@ -139,4 +145,3 @@ export default function GameControls({ onMove }) {
     </div>
   )
 }
-

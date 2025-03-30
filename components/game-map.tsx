@@ -1,9 +1,20 @@
 "use client"
 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
-import { Icon } from "leaflet"
+import { Icon, LatLngExpression } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { useEffect } from "react"
+import { Creature, PokeStop } from "../types/game-types"
+
+interface MapCenterUpdaterProps {
+  position: LatLngExpression;
+}
+
+interface GameMapProps {
+  playerPosition: LatLngExpression;
+  creatures: Creature[];
+  pokeStops: PokeStop[];
+}
 
 // Custom icons
 const playerIcon = new Icon({
@@ -13,7 +24,7 @@ const playerIcon = new Icon({
   iconAnchor: [16, 16],
 })
 
-const creatureIcons = {
+const creatureIcons: Record<Creature["type"], Icon> = {
   normal: new Icon({
     iconUrl:
       "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff00' width='24px' height='24px'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E",
@@ -55,7 +66,7 @@ const activatedPokeStopIcon = new Icon({
 })
 
 // Component to update the map center when player moves
-function MapCenterUpdater({ position }) {
+function MapCenterUpdater({ position }: MapCenterUpdaterProps) {
   const map = useMap()
 
   useEffect(() => {
@@ -65,7 +76,7 @@ function MapCenterUpdater({ position }) {
   return null
 }
 
-export default function GameMap({ playerPosition, creatures, pokeStops }) {
+export default function GameMap({ playerPosition, creatures, pokeStops }: GameMapProps) {
   return (
     <MapContainer
       center={playerPosition}
@@ -114,4 +125,3 @@ export default function GameMap({ playerPosition, creatures, pokeStops }) {
     </MapContainer>
   )
 }
-

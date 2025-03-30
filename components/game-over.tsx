@@ -1,6 +1,14 @@
 "use client"
 
-export default function GameOver({ score, highScores, onRestart }) {
+import { HighScore } from "../types/game-types"
+
+interface GameOverProps {
+  score: number;
+  highScores: HighScore[];
+  onRestart: () => void;
+}
+
+export default function GameOver({ score, highScores, onRestart }: GameOverProps) {
   return (
     <div className="p-8 bg-white rounded-lg shadow-md text-center">
       <h2 className="text-2xl font-bold mb-4">Game Over!</h2>
@@ -32,4 +40,3 @@ export default function GameOver({ score, highScores, onRestart }) {
     </div>
   )
 }
-
